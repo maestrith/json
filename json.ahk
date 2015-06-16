@@ -8,8 +8,7 @@ return
 
 
 json(json){
-	temp:=ComObjCreate("MSXML2.DOMDocument"),temp.setProperty("SelectionLanguage","XPath")
-	top:=temp.AppendChild(temp.CreateElement("json")),pos:=1,list:=[]
+	temp:=ComObjCreate("MSXML2.DOMDocument"),temp.setProperty("SelectionLanguage","XPath"),top:=temp.AppendChild(temp.CreateElement("json")),pos:=1,list:=[]
 	while,RegExMatch(json,"OU)({|}|\x22.*\x22|:|,|\[|\])",found,pos){
 		if(type:=found.1="{"?"Object":found.1="["?"Array":""){
 			new:=temp.CreateElement(type),top:=top.AppendChild(new)
