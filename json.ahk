@@ -9,13 +9,13 @@ return
 
 json(json){
 	temp:=ComObjCreate("MSXML2.DOMDocument"),temp.setProperty("SelectionLanguage","XPath"),top:=temp.AppendChild(temp.CreateElement("json")),pos:=1,list:=[]
-	while,RegExMatch(json,"OU)({|}|\x22.*\x22|:|,|\[|\])",found,pos){
+	while,RegExMatch(json,"OU)(\x22.*\x22|{|}|:|,|\[|\])",found,pos){
 		if(type:=found.1="{"?"Object":found.1="["?"Array":""){
 			new:=temp.CreateElement(type),top:=top.AppendChild(new)
 			if(list[list.MaxIndex()]=":")
 				top.SetAttribute("name",list[list.MaxIndex()-1])
 		}
-		if(found.1~="({|}|,|\[|\])"=0||found.1~=":"||SubStr(json,pos,found.Pos(1)-pos)){
+		if(found.1!="{"&&found.1!="}"&&found.1!="["&&found.1!="]"||found.1=","||found.1=":"||SubStr(json,pos,found.Pos(1)-pos)){
 			if(list[list.MaxIndex()]=":")
 				value:=SubStr(json,pos,found.Pos(1)-pos)?SubStr(json,pos,found.Pos(1)-pos):Trim(found.1,Chr(34)),new:=temp.CreateElement("value"),new:=top.AppendChild(new),new.SetAttribute("key",list[list.MaxIndex()-1]),new.SetAttribute("value",value)
 		}
