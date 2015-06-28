@@ -4,8 +4,6 @@ json:=json(json)
 Transform(json) ;not necessary but it makes it easier to read
 ToolTip,% json.xml
 MsgBox,% json.SelectSingleNode("//*[@name='toast']/descendant::*/@value").text
-Gui,Add,ListBox,,this|that
-Gui,Show
 return
 GuiEscape:
 ExitApp
