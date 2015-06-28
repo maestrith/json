@@ -4,9 +4,12 @@ json:=json(json)
 Transform(json) ;not necessary but it makes it easier to read
 ToolTip,% json.xml
 MsgBox,% json.SelectSingleNode("//*[@name='toast']/descendant::*/@value").text
+Gui,Add,ListBox,,this|that
+Gui,Show
 return
-
-
+GuiEscape:
+ExitApp
+return
 json(json){
 	temp:=ComObjCreate("MSXML2.DOMDocument"),temp.setProperty("SelectionLanguage","XPath"),top:=temp.AppendChild(temp.CreateElement("json")),pos:=1,list:=[]
 	while,RegExMatch(json,"OU)(\x22.*\x22|{|}|:|,|\[|\])",found,pos){
@@ -25,8 +28,7 @@ json(json){
 		pos:=found.Pos(1)+found.len(1)
 	}
 	return temp
-}
-transform(xml){
+}transform(xml){
 	static
 	if !IsObject(xsl){
 		xsl:=ComObjCreate("MSXML2.DOMDocument")
