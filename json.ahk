@@ -10,6 +10,7 @@ ExitApp
 return
 json(json){
 	temp:=ComObjCreate("MSXML2.DOMDocument"),temp.setProperty("SelectionLanguage","XPath"),top:=temp.AppendChild(temp.CreateElement("json")),pos:=1,list:=[]
+	json:=RegExReplace(json,"\R")
 	while,RegExMatch(json,"OU)(\x22.*\x22|{|}|:|,|\[|\])",found,pos){
 		if(type:=found.1="{"?"Object":found.1="["?"Array":""){
 			new:=temp.CreateElement(type),top:=top.AppendChild(new)
@@ -18,7 +19,7 @@ json(json){
 		}
 		if(found.1!="{"&&found.1!="}"&&found.1!="["&&found.1!="]"||found.1=","||found.1=":"||SubStr(json,pos,found.Pos(1)-pos)){
 			if(list[list.MaxIndex()]=":")
-				value:=SubStr(json,pos,found.Pos(1)-pos)?SubStr(json,pos,found.Pos(1)-pos):Trim(found.1,Chr(34)),new:=temp.CreateElement("value"),new:=top.AppendChild(new),new.SetAttribute("key",list[list.MaxIndex()-1]),new.SetAttribute("value",value)
+				value:=Trim(SubStr(json,pos,found.Pos(1)-pos))?SubStr(json,pos,found.Pos(1)-pos):Trim(found.1,Chr(34)),new:=temp.CreateElement("value"),new:=top.AppendChild(new),new.SetAttribute("key",list[list.MaxIndex()-1]),new.SetAttribute("value",value)
 		}
 		if(found.1="}"||found.1="]")
 			top:=top.ParentNode
